@@ -1,0 +1,45 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_REGION: us-west-1
+
+phases:
+  pre_build:
+    commands:
+      - echo "Login to ECR"
+      - aws --version
+      - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:-latest}
+
+      # Download DocumentDB CA bundle for TLS (preferred)
+      - mkdir -p backend/certs
+      - curl -sS -o backend/certs/global-bundle.pem https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
+
+  build:
+    commands:
+      - echo "Build backend image"
+      - docker build -t backend:$IMAGE_TAG ./backend
+      - docker tag backend:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/backend-repo:$IMAGE_TAG
+
+      - echo "Build frontend image"
+      - docker build -t frontend:$IMAGE_TAG ./frontend
+      - docker tag frontend:$IMAGE_TAG ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/frontend-repo:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo "Push images"
+      - docker push ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/backend-repo:$IMAGE_TAG
+      - docker push ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/frontend-repo:$IMAGE_TAG
+
+      # CodePipeline ECS deploy requires imagedefinitions.json
+      # We'll generate TWO files and wire TWO deploy actions in pipeline. :contentReference[oaicite:2]{index=2}
+      - printf '[{"name":"backend","imageUri":"%s"}]' ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/backend-repo:$IMAGE_TAG > imagedefinitions-backend.json
+      - printf '[{"name":"frontend","imageUri":"%s"}]' ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/frontend-repo:$IMAGE_TAG > imagedefinitions-frontend.json
+
+artifacts:
+  files:
+    - imagedefinitions-backend.json
+    - imagedefinitions-frontend.json
