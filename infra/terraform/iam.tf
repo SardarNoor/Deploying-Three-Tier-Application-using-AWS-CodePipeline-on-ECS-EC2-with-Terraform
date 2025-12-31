@@ -126,7 +126,15 @@ resource "aws_iam_role_policy" "codepipeline_inline" {
       { Effect="Allow", Action=["s3:*"], Resource="*" },
       { Effect="Allow", Action=["codebuild:BatchGetBuilds","codebuild:StartBuild"], Resource="*" },
       { Effect="Allow", Action=["ecs:*","iam:PassRole"], Resource="*" },
-      { Effect="Allow", Action=["codestar-connections:UseConnection"], Resource="*" }
+      {
+  Effect = "Allow",
+  Action = [
+    "codestar-connections:UseConnection",
+    "codeconnections:UseConnection"
+  ],
+  Resource = "*"
+}
+
     ]
   })
 }
