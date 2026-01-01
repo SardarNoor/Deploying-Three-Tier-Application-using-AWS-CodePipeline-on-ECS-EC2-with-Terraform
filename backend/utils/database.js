@@ -7,9 +7,12 @@ const connectDB = async () => {
     console.log('Value of process.env.MONGODB_URI:', process.env.MONGODB_URI);
     console.log('Value of config.mongoUri:', config.mongoUri);
     await mongoose.connect(config.mongoUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+  tls: true,
+  tlsCAFile: '/app/certs/global-bundle.pem',
+  retryWrites: false,
+  serverSelectionTimeoutMS: 5000,
+});
+
     console.log('MongoDB connected successfully');
 
     console.log('Connected database name:', mongoose.connection.db.databaseName);

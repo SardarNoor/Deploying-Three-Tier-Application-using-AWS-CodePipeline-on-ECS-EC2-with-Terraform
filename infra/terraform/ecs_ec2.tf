@@ -161,22 +161,17 @@ resource "aws_ecs_task_definition" "backend_td" {
       portMappings = [{ containerPort = var.backend_port, protocol = "tcp" }]
 
      environment = [
-  { name = "PORT", value = tostring(var.backend_port) },
+  { name = "PORT",       value = tostring(var.backend_port) },
+  { name = "NODE_ENV",   value = "production" },
 
-  # IMPORTANT: backend uses this
+  # app reads this
   { name = "MONGODB_URI", value = var.mongodb_uri },
 
-  # optional but recommended
-  { name = "NODE_ENV", value = "production" }
+  # optional (only keep if your app uses them somewhere; otherwise remove)
+  { name = "DOCDB_USER", value = var.docdb_username },
+  { name = "DOCDB_PASS", value = var.docdb_password }
 ]
 
-
-
-      # TEMP: credentials in env (ok for first run). Next we move to SSM SecureString.
-      environment = concat([
-        { name = "DOCDB_USER", value = var.docdb_username },
-        { name = "DOCDB_PASS", value = var.docdb_password }
-      ], [])
 
       logConfiguration = {
         logDriver = "awslogs",
