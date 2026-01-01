@@ -8,7 +8,7 @@ github_repo_full_name = "SardarNoor/Deploying-Three-Tier-Application-using-AWS-C
 github_branch         = "main"
 
 # IMPORTANT: put your real CodeStar connection ARN here after you create it in AWS Console
-codestar_connection_arn = "arn:aws:codestar-connections:us-west-1:504649076991:connection/127f7db4-1799-4e3c-b338-f31d8cf9af30"
+codestar_connection_arn = "arn:aws:codeconnections:us-west-1:504649076991:connection/127f7db4-1799-4e3c-b338-f31d8cf9af30"
 
 
 vpc_cidr_west1 = "10.10.0.0/16"
@@ -25,3 +25,4 @@ frontend_port = 80
 docdb_username = "muawinadmin"
 docdb_password = "ChangeThisStrongPass123!"
 docdb_dbname   = "muawin"
+mongodb_uri = "mongodb://muawinadmin:SomePassword123!@muawin-cid-ecs-docdb.cluster-XXXX.us-west-2.docdb.amazonaws.com:27017/muawin?tls=true&tlsCAFile=/app/certs/global-bundle.pem&retryWrites=false"

@@ -160,13 +160,17 @@ resource "aws_ecs_task_definition" "backend_td" {
       essential = true
       portMappings = [{ containerPort = var.backend_port, protocol = "tcp" }]
 
-      environment = [
-        { name = "PORT", value = tostring(var.backend_port) },
-        { name = "DOCDB_HOST", value = aws_docdb_cluster.docdb.endpoint },
-        { name = "DOCDB_PORT", value = "27017" },
-        { name = "DOCDB_DB",   value = var.docdb_dbname },
-        { name = "DOCDB_TLS_CA_FILE", value = "/app/certs/global-bundle.pem" }
-      ]
+     environment = [
+  { name = "PORT", value = tostring(var.backend_port) },
+
+  # IMPORTANT: backend uses this
+  { name = "MONGODB_URI", value = var.mongodb_uri },
+
+  # optional but recommended
+  { name = "NODE_ENV", value = "production" }
+]
+
+
 
       # TEMP: credentials in env (ok for first run). Next we move to SSM SecureString.
       environment = concat([

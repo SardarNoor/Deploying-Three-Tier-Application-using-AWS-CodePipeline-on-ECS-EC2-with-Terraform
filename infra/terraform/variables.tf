@@ -27,3 +27,4 @@ variable "frontend_port" { type = number } # 80
 variable "docdb_username" { type = string }
 variable "docdb_password" { type = string } # keep in tfvars for now (later move to SSM)
 variable "docdb_dbname"   { type = string } # muawin
+variable "mongodb_uri" { type = string }
