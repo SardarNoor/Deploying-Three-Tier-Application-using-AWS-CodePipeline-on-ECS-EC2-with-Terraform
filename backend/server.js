@@ -33,22 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 // Root route
 app.get('/api', (req, res) => {
   res.json({
-    message: 'Welcome to Muawin API',
-    version: '1.0.0',
-    endpoints: {
-      auth: '/api/auth',
-      users: '/api/users',
-      zones: '/api/zones',
-      tasks: '/api/tasks',
-      announcements: '/api/announcements',
-      assignedTasks: '/api/assigned-tasks',
-      tickets: '/api/tickets',
-      files: '/api/files',
-      locations: '/api/locations',
-      categories: '/api/categories',
-      notifications: '/api/notifications'
-    },
-    documentation: 'API documentation will be available soon'
+    message: 'Sardar Noor Ul Hassan Cloud Intern at Cloudelligent, Deployed Three Tier App with Codepipeline+ECS+ALB through Terraform',
   });
 });
 
