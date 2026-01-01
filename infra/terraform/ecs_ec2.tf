@@ -167,7 +167,7 @@ resource "aws_ecs_task_definition" "backend_td" {
   # app reads this
   { name = "MONGODB_URI", value = var.mongodb_uri },
 
-  # optional (only keep if your app uses them somewhere; otherwise remove)
+  
   { name = "DOCDB_USER", value = var.docdb_username },
   { name = "DOCDB_PASS", value = var.docdb_password }
 ]

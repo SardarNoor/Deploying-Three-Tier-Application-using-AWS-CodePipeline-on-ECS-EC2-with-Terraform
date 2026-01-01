@@ -14,7 +14,7 @@ phases:
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:-latest}
 
-      # Download DocumentDB CA bundle for TLS (preferred)
+      # Downloads DocumentDB CA bundle for TLS 
       - mkdir -p backend/certs
       - curl -sS -o backend/certs/global-bundle.pem https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
 
