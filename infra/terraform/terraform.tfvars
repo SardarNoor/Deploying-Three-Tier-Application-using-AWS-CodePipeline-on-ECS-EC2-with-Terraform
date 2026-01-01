@@ -25,4 +25,4 @@ frontend_port = 80
 docdb_username = "muawinadmin"
 docdb_password = "ChangeThisStrongPass123!"
 docdb_dbname   = "muawin"
-mongodb_uri = "mongodb://muawinadmin:ChangeThisStrongPass123!@muawin-cid-ecs-docdb.cluster-XXXX.us-west-2.docdb.amazonaws.com:27017/muawin?tls=true&tlsCAFile=/app/certs/global-bundle.pem&retryWrites=false"
+mongodb_uri = "mongodb://muawinadmin:ChangeThisStrongPass123!@muawin-cicd-ecs-docdb-1.cuoj6ci9wmw9.us-west-2.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&retryWrites=false"
